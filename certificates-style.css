@@ -1,0 +1,226 @@
+/* ==================== الخط ==================== */
+@font-face {
+    font-family: 'Bein Black';
+    src: url('ArbFONTS-bein-ar-black.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* ==================== الألوان من الموقع الأساسي ==================== */
+:root {
+    --dark: #4D0F0F;
+    /* العنابي الداكن */
+    --light: #E8D7B9;
+    /* بيج فاتح */
+    --accent-color: #FFFFFF;
+    /* اللون الأبيض النظيف */
+    --light-bg: #F8F5EF;
+    /* خلفية الصفحة الفاتحة */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    direction: rtl;
+    font-family: 'Bein Black', Tahoma, sans-serif;
+    background-color: var(--light-bg);
+    color: var(--dark);
+    line-height: 1.6;
+}
+
+/* ==================== الهيدر (مطابق لصفحة index.html) ==================== */
+header {
+    background-color: var(--dark);
+    color: var(--light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 5px solid var(--light);
+}
+
+.header-logo {
+    height: 40px;
+    width: auto;
+}
+
+.header-links a {
+    color: var(--light);
+    margin-left: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 5px 0;
+    transition: border-bottom 0.3s;
+}
+
+.header-links a:hover {
+    border-bottom: 2px solid var(--light);
+}
+
+/* ==================== الصفحة (المحتوى الرئيسي) ==================== */
+.page {
+    max-width: 800px; /* زيادة العرض قليلاً */
+    margin: 60px auto;
+    background: var(--accent-color);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.page h2 {
+    margin-bottom: 20px;
+    font-size: 2.2em;
+    color: var(--dark);
+    position: relative;
+}
+
+.page h2::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 3px;
+    background: var(--dark);
+    margin: 10px auto 0;
+}
+
+.search-input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.search-input-group input {
+    flex-grow: 1;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid var(--dark);
+    font-size: 1.1em;
+    font-family: inherit;
+    direction: rtl;
+}
+
+
+/* ==================== الأزرار (تنسيق مطابق للصفحة الرئيسية) ==================== */
+.btn-main,
+.btn-print {
+    background: var(--dark);
+    color: var(--light);
+    border: none;
+    padding: 12px 30px;
+    font-size: 1.1em;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    font-weight: bold;
+}
+
+.btn-main:hover,
+.btn-print:hover {
+    background: #6a1a1a;
+    transform: translateY(-2px);
+}
+
+/* زر طباعة الشهادة */
+.btn-print {
+    margin-top: 20px;
+    display: block;
+    width: 100%;
+}
+
+
+/* ==================== عرض الشهادة ==================== */
+#certificateArea {
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 1px solid var(--light);
+    display: none;
+    text-align: right; /* لجعل العنوان يمين */
+}
+
+#certificateArea h3 {
+    text-align: center;
+    color: var(--dark);
+    margin-bottom: 20px;
+}
+
+#certImage {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    display: block;
+    margin: 0 auto;
+}
+
+.cert-info {
+    text-align: right;
+    margin-bottom: 20px;
+    font-size: 1.1em;
+    border-right: 4px solid var(--dark);
+    padding-right: 15px;
+    margin-top: 30px;
+    line-height: 2;
+}
+
+.cert-info strong {
+    color: #000;
+}
+
+/* ==================== الفوتر ==================== */
+footer {
+    background-color: var(--dark);
+    color: var(--light);
+    text-align: center;
+    padding: 30px 20px;
+    font-size: 0.9em;
+    margin-top: 50px;
+}
+/* ==================== تنسيق الطباعة (إخفاء كل شيء ماعدا الشهادة) ==================== */
+@media print {
+    /* إخفاء الهيدر، الفوتر، أيقونات البحث، والرسائل غير المتعلقة بالشهادة */
+    header,
+    footer,
+    #courseSelection, /* إخفاء شاشة اختيار الدورة */
+    .btn-back, /* إخفاء زر الرجوع */
+    .search-input-group, /* إخفاء شريط البحث */
+    #notFoundMessage, /* إخفاء رسالة الخطأ */
+    .btn-print, /* إخفاء زر الطباعة نفسه */
+    #pageDescription,
+    #pageTitle {
+        display: none !important;
+    }
+
+    /* توسيع المحتوى المتبقي (وهو #certificateArea) ليحتل الصفحة كاملة */
+    body {
+        background-color: white !important;
+        margin: 0;
+        padding: 0;
+    }
+
+    .page {
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+        max-width: 100%;
+        width: 100%;
+        min-height: 100vh; /* لجعلها تملأ صفحة الطباعة */
+    }
+    
+    /* التأكد من ظهور منطقة الشهادة وإلغاء أي حدود علوية غير مرغوبة */
+    #certificateArea {
+        display: block !important; /* التأكد من ظهوره حتى لو كان مخفياً قبل الطباعة */
+        border-top: none;
+        padding-top: 0;
+    }
+
+    /* جعل تفاصيل الشهادة (إذا أردت طباعتها) والـ H3 في وضع جيد */
+    #certificateArea h3 {
+        padding-top: 30px;
+    }
+}
+

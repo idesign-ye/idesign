@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحة إدارة الشهادات - iDESIGN</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="certificates-style.css">
+    <style>
+        /* ===== تنسيقات صفحة الإدارة ===== */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4D0F0F;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header .logo img {
+            height: 50px;
+        }
+        header .header-links a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 15px;
+            font-size: 1em;
+        }
+        header .header-links a:hover {
+            text-decoration: underline;
+        }
+
+        .admin-page {
+            max-width: 1000px;
+            margin: 60px auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: right;
+        }
+        .admin-page h2 {
+            text-align: center;
+            color: #4D0F0F;
+            margin-bottom: 30px;
+        }
+
+        .instructions {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #fff3cd;
+            border-right: 5px solid #4D0F0F;
+            color: #4D0F0F;
+        }
+        .instructions ol {
+            padding-right: 20px;
+            line-height: 1.8;
+        }
+
+        .form-section input,
+        .form-section select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: 1em;
+        }
+
+        .form-section label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .btn-main {
+            padding: 12px 20px;
+            background-color: #4D0F0F;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-main:hover {
+            background-color: #6a1a1a;
+        }
+
+        #generatedCodeArea {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f0f0f0;
+            border: 1px dashed #4D0F0F;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        #generatedCode {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: monospace;
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 5px;
+            color: #000080;
+            display: block;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #4D0F0F;
+            color: #fff;
+            margin-top: 50px;
+        }
+
+        /* ===== تحسين تجربة الجوال ===== */
+        @media (max-width: 600px) {
+            .admin-page {
+                margin: 20px;
+                padding: 20px;
+            }
+            .btn-main {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <img src="الشعار.png" alt="iDESIGN Logo">
+    </div>
+    <div class="header-links">
+        <a href="certificates.html"><i class="fa-solid fa-graduation-cap"></i> الشهادات</a>
+    </div>
+</header>
+
+<div class="admin-page">
+    <h2><i class="fa-solid fa-code-branch"></i> مُولِّد كود الشهادة (لإضافة يدوية)</h2>
+
+    <div class="instructions">
+        <h3>تعليمات مهمة:</h3>
+        <ol>
+            <li>املأ جميع الحقول.</li>
+            <li>اختر ملف الشهادة؛ سيتم استخراج اسمه تلقائيًا.</li>
+            <li>اضغط على زر "إنشاء كود الشهادة".</li>
+            <li>انسخ الكود وألصقه في ملف <code>certificates-data.js</code> قبل القوس الأخير <code>]</code>، وضع فاصلة <code>,</code> قبله.</li>
+            <li>تأكد من رفع ملف الشهادة داخل مجلد <strong>الشهايد</strong>.</li>
+        </ol>
+    </div>
+
+    <div class="form-section">
+        <h3>بيانات الشهادة الجديدة:</h3>
+
+        <input type="text" id="adminCertID" placeholder="رقم الشهادة (مثال: PHOTO-2025-0004)" required>
+        <input type="text" id="adminName" placeholder="اسم المتدرب" required>
+
+        <label for="adminImageFile">اختر ملف صورة الشهادة:</label>
+        <input type="file" id="adminImageFile" accept="image/jpeg, image/png" required>
+        <small style="color: #4D0F0F;">سنستخدم اسم الملف فقط لتوليد الكود مع إضافة مجلد الشهايد تلقائيًا.</small>
+
+        <select id="adminCourse" required onchange="updateCourseData()">
+            <option value="">اختر الدورة</option>
+            <option value="تصوير-حضوري|دورة التصوير الاحترافي (حضوري)">دورة التصوير الاحترافي (حضوري)</option>
+            <option value="جرافيكس|دورة الجرافيكس والهوية البصرية">دورة الجرافيكس والهوية البصرية</option>
+            <option value="رونن|دورة الرونن والمونتاج السينمائي">دورة الرونن والمونتاج السينمائي</option>
+        </select>
+
+        <input type="text" id="adminDate" placeholder="تاريخ البدء (مثال: 01 / 01 / 2026)" required>
+
+        <button class="btn-main" onclick="generateCertificateCode()">
+            <i class="fa-solid fa-gears"></i> إنشاء كود الشهادة
+        </button>
+    </div>
+
+    <div id="generatedCodeArea" style="display: none;">
+        <h3><i class="fa-solid fa-clipboard-list"></i> الكود الجاهز للإضافة:</h3>
+        <p>انسخ الكود بالكامل وألصقه في ملف <code>certificates-data.js</code> قبل القوس الأخير <code>]</code>، وضع فاصلة <code>,</code> قبله.</p>
+        <code id="generatedCode"></code>
+        <button class="btn-main" onclick="copyCode()">
+            <i class="fa-solid fa-copy"></i> نسخ الكود
+        </button>
+    </div>
+</div>
+
+<footer>
+    جميع الحقوق محفوظة © iDESIGN 2025 - مولد بيانات الإدارة
+</footer>
+
+<script>
+    // قائمة مفاتيح الدورات
+    const courseKeys = {
+        'تصوير-حضوري': 'دورة التصوير الاحترافي (حضوري)',
+        'جرافيكس': 'دورة الجرافيكس والهوية البصرية',
+        'رونن': 'دورة الرونن والمونتاج السينمائي'
+    };
+
+    let courseType = "";
+    let courseName = "";
+    const CERT_FOLDER = "الشهايد/";
+
+    function updateCourseData() {
+        const selected = document.getElementById("adminCourse").value;
+        if (selected) [courseType, courseName] = selected.split('|');
+        else { courseType = ""; courseName = ""; }
+    }
+
+    function generateCertificateCode() {
+        const id = document.getElementById("adminCertID").value.trim();
+        const name = document.getElementById("adminName").value.trim();
+        const date = document.getElementById("adminDate").value.trim();
+        const fileInput = document.getElementById("adminImageFile");
+
+        if (!id || !name || !date || !courseType || fileInput.files.length === 0) {
+            alert("الرجاء ملء جميع الحقول واختيار ملف الشهادة.");
+            return;
+        }
+
+        const imageName = fileInput.files[0].name;
+        const fullImagePath = CERT_FOLDER + imageName;
+
+        const code = `{
+    id: "${id}",
+    name: "${name}",
+    course: "${courseName}",
+    type: "${courseType}",
+    date: "${date}",
+    image: "${fullImagePath}"
+}`;
+
+        document.getElementById("generatedCode").textContent = code;
+        document.getElementById("generatedCodeArea").style.display = "block";
+    }
+
+    function copyCode() {
+        const codeElement = document.getElementById("generatedCode");
+        const range = document.createRange();
+        range.selectNode(codeElement);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+
+        try {
+            document.execCommand('copy');
+            alert("تم نسخ الكود بنجاح! الآن ألصقه في ملف certificates-data.js");
+        } catch (err) {
+            alert("فشل في النسخ، يرجى نسخه يدويًا.");
+        }
+
+        window.getSelection().removeAllRanges();
+    }
+</script>
+
+</body>
+</html>
